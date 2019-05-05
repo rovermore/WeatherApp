@@ -7,26 +7,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import com.example.rovermore.weatherapp.adapter.LocationAdapter;
 import com.example.rovermore.weatherapp.datamodel.Location;
 
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchView extends AppCompatActivity implements ViewInterface {
 
     private EditText editText;
     private Button searchButton;
-    private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private LocationAdapter locationAdapter;
-    private OnQueryPass onQueryPass;
 
-    interface OnQueryPass{
-        void passQuery(String string);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +30,6 @@ public class SearchActivity extends AppCompatActivity {
 
         editText = findViewById(R.id.etQuery);
         searchButton = findViewById(R.id.buttonSearch);
-        progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.recyclerViewResult);
         layoutManager = new LinearLayoutManager(this);
         locationAdapter = new LocationAdapter(this,null);
@@ -45,19 +39,24 @@ public class SearchActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchQuery();
+                searchQuery(v);
             }
         });
     }
 
-    private void searchQuery(){
+    private void searchQuery(View v){
         String queryString = String.valueOf(editText.getText());
-        onQueryPass.passQuery(queryString);
+        SearchPresenter searchPresenter = new SearchPresenter(v, queryString,this);
 
     }
 
     public void onReceiveList(List<Location> locationList){
         locationAdapter.clearLocationListAdapter();
         locationAdapter.setLocationList(locationList);
+    }
+
+    @Override
+    public void receiveResults(List<Location> locationList) {
+        onReceiveList(locationList);
     }
 }

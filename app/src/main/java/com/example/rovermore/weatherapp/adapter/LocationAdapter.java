@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.rovermore.weatherapp.R;
+import com.example.rovermore.weatherapp.datamodel.Country;
 import com.example.rovermore.weatherapp.datamodel.Location;
+import com.example.rovermore.weatherapp.datamodel.Region;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyLocationViewHolder> {
@@ -34,7 +35,13 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyLoca
 
     @Override
     public void onBindViewHolder(@NonNull LocationAdapter.MyLocationViewHolder myLocationViewHolder, int i) {
+        Location location = locationList.get(i);
 
+        myLocationViewHolder.city.setText(location.getEnglishName());
+        Country country = location.getCountry();
+        myLocationViewHolder.country.setText((CharSequence) country.getEnglishName() );
+        Region region = location.getRegion();
+        myLocationViewHolder.region.setText((CharSequence) region.getEnglishName());
     }
 
     @Override
@@ -68,9 +75,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyLoca
     }
 
     public void setLocationList(List<Location> locationList){
-        //Creating a new ArrayList to be independent from main activity list
         if(locationList!=null) {
-            this.locationList = new ArrayList<>(locationList);
+            this.locationList = locationList;
             notifyDataSetChanged();
         }
     }
