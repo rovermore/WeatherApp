@@ -1,21 +1,27 @@
 
 package com.example.rovermore.weatherapp.datamodel.location;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Entity(tableName = "locations")
 public class Location implements Serializable
 {
 
+    @PrimaryKey(autoGenerate = true)
+    private int idDatabase;
     @SerializedName("Version")
     @Expose
     private Integer version;
     @SerializedName("Key")
     @Expose
-    private String key;
+    private String keyLocation;
     @SerializedName("Type")
     @Expose
     private String type;
@@ -57,6 +63,30 @@ public class Location implements Serializable
     private List<String> dataSets = null;
     private final static long serialVersionUID = -4367835460878030774L;
 
+    public Location(int idDatabase, Integer version, String keyLocation, String type, Integer rank, String localizedName,
+                    String englishName, String primaryPostalCode, Region region, Country country, AdministrativeArea administrativeArea,
+                    TimeZone timeZone, GeoPosition geoPosition, Boolean isAlias,
+                    List<SupplementalAdminArea> supplementalAdminAreas, List<String> dataSets) {
+        this.idDatabase = idDatabase;
+        this.version = version;
+        this.keyLocation = keyLocation;
+        this.type = type;
+        this.rank = rank;
+        this.localizedName = localizedName;
+        this.englishName = englishName;
+        this.primaryPostalCode = primaryPostalCode;
+        this.region = region;
+        this.country = country;
+        this.administrativeArea = administrativeArea;
+        this.timeZone = timeZone;
+        this.geoPosition = geoPosition;
+        this.isAlias = isAlias;
+        this.supplementalAdminAreas = supplementalAdminAreas;
+        this.dataSets = dataSets;
+    }
+
+    public int getIdDatabase() { return idDatabase; }
+
     public Integer getVersion() {
         return version;
     }
@@ -65,12 +95,12 @@ public class Location implements Serializable
         this.version = version;
     }
 
-    public String getKey() {
-        return key;
+    public String getKeyLocation() {
+        return keyLocation;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setKeyLocation(String keyLocation) {
+        this.keyLocation = keyLocation;
     }
 
     public String getType() {
