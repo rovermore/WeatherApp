@@ -1,6 +1,7 @@
 package com.example.rovermore.weatherapp;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -46,17 +47,28 @@ public class SearchView extends AppCompatActivity implements ViewInterface {
 
     private void searchQuery(View v){
         String queryString = String.valueOf(editText.getText());
-        SearchPresenter searchPresenter = new SearchPresenter(v, queryString,this);
-
+        SearchPresenter searchPresenter = new SearchPresenter(this);
+        searchPresenter.fetchLocation(v,queryString);
     }
 
-    public void onReceiveList(List<Location> locationList){
+    public void setListToAdapter(List<Location> locationList){
         locationAdapter.clearLocationListAdapter();
         locationAdapter.setLocationList(locationList);
     }
 
     @Override
     public void receiveResults(List<Location> locationList) {
-        onReceiveList(locationList);
+        setListToAdapter(locationList);
+    }
+
+    @Override
+    public void receiveErrorFromSearch(final View view) {
+        Snackbar.make(view,"Error when connecting the network",Snackbar.LENGTH_SHORT)
+                .setAction("Retry", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        searchQuery(view);
+                    }
+                }).show();
     }
 }

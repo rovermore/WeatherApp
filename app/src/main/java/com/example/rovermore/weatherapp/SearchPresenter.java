@@ -1,12 +1,9 @@
 package com.example.rovermore.weatherapp;
 
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 
 import com.example.rovermore.weatherapp.datamodel.Location;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
@@ -22,17 +19,13 @@ public class SearchPresenter  {
 
     private ViewInterface viewInterface;
 
-    public SearchPresenter(View view, String location, ViewInterface viewInterface){
+    public SearchPresenter(ViewInterface viewInterface){
        this.viewInterface = viewInterface;
-       passQuery(view, location);
+
     }
 
 
-    private void passQuery(final View view, final String location) {
-        Gson gson = new GsonBuilder()
-                .setDateFormat("dd-MM-yyyy HH:mm")
-                .create();
-
+    public void fetchLocation(final View view, final String location) {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(NetworkUtils.GetClient())
@@ -40,7 +33,7 @@ public class SearchPresenter  {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        NetworkUtils.AccuWeatherAPI accuWeatherAPI = retrofit.create(NetworkUtils.AccuWeatherAPI.class);
+        AccuWeatherAPI accuWeatherAPI = retrofit.create(AccuWeatherAPI.class);
         Call<List<Location>> call = accuWeatherAPI.getLocationResults(location);
         call.enqueue(new Callback<List<Location>>() {
             @Override
@@ -56,13 +49,7 @@ public class SearchPresenter  {
             @Override
             public void onFailure(Call<List<Location>> call, Throwable t) {
                 Log.d(TAG,"ERROR: " + t.toString());
-                Snackbar.make(view,"Error when connecting the network",Snackbar.LENGTH_SHORT)
-                        .setAction("Retry", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                passQuery(view,location);
-                            }
-                        }).show();
+                viewInterface.receiveErrorFromSearch(view);
             }
         });
     }
