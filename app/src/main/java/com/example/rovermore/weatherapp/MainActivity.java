@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.rovermore.weatherapp.search.SearchView;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

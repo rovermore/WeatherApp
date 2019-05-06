@@ -1,9 +1,10 @@
 
-package com.example.rovermore.weatherapp.datamodel;
+package com.example.rovermore.weatherapp.datamodel.location;
 
-import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
 public class TimeZone implements Serializable
 {

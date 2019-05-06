@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.rovermore.weatherapp.R;
-import com.example.rovermore.weatherapp.datamodel.Country;
-import com.example.rovermore.weatherapp.datamodel.Location;
-import com.example.rovermore.weatherapp.datamodel.Region;
+import com.example.rovermore.weatherapp.datamodel.location.Country;
+import com.example.rovermore.weatherapp.datamodel.location.Location;
+import com.example.rovermore.weatherapp.datamodel.location.Region;
 
 import java.util.List;
 

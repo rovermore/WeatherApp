@@ -1,5 +1,5 @@
 
-package com.example.rovermore.weatherapp.datamodel;
+package com.example.rovermore.weatherapp.datamodel.location;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

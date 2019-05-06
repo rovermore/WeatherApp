@@ -1,9 +1,11 @@
-package com.example.rovermore.weatherapp;
+package com.example.rovermore.weatherapp.search;
 
 import android.util.Log;
 import android.view.View;
 
-import com.example.rovermore.weatherapp.datamodel.Location;
+import com.example.rovermore.weatherapp.AccuWeatherAPI;
+import com.example.rovermore.weatherapp.NetworkUtils;
+import com.example.rovermore.weatherapp.datamodel.location.Location;
 
 import java.util.List;
 
@@ -17,13 +19,12 @@ public class SearchPresenter  {
 
     private static final String TAG = SearchPresenter.class.getSimpleName();
 
-    private ViewInterface viewInterface;
+    private SearchViewInterface searchViewInterface;
 
-    public SearchPresenter(ViewInterface viewInterface){
-       this.viewInterface = viewInterface;
+    public SearchPresenter(SearchViewInterface searchViewInterface){
+       this.searchViewInterface = searchViewInterface;
 
     }
-
 
     public void fetchLocation(final View view, final String location) {
 
@@ -42,14 +43,14 @@ public class SearchPresenter  {
                     Log.e(TAG,"Response code is: " + response.code());
                 } else {
                     List<Location> locationList = response.body();
-                    viewInterface.receiveResults(locationList);
+                    searchViewInterface.receiveResults(locationList);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Location>> call, Throwable t) {
                 Log.d(TAG,"ERROR: " + t.toString());
-                viewInterface.receiveErrorFromSearch(view);
+                searchViewInterface.receiveErrorFromSearch(view);
             }
         });
     }

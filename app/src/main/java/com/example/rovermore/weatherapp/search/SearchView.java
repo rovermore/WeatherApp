@@ -1,4 +1,4 @@
-package com.example.rovermore.weatherapp;
+package com.example.rovermore.weatherapp.search;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -9,20 +9,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.rovermore.weatherapp.R;
 import com.example.rovermore.weatherapp.adapter.LocationAdapter;
-import com.example.rovermore.weatherapp.datamodel.Location;
+import com.example.rovermore.weatherapp.datamodel.location.Location;
 
 import java.util.List;
 
-public class SearchView extends AppCompatActivity implements ViewInterface {
+public class SearchView extends AppCompatActivity implements SearchViewInterface {
 
     private EditText editText;
     private Button searchButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private LocationAdapter locationAdapter;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,7 @@ public class SearchView extends AppCompatActivity implements ViewInterface {
                 searchQuery(v);
             }
         });
+
     }
 
     private void searchQuery(View v){

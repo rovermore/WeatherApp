@@ -1,30 +1,31 @@
 
-package com.example.rovermore.weatherapp.datamodel;
+package com.example.rovermore.weatherapp.datamodel.location;
 
-import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SupplementalAdminArea implements Serializable
+import java.io.Serializable;
+
+public class Country implements Serializable
 {
 
-    @SerializedName("Level")
+    @SerializedName("ID")
     @Expose
-    private Integer level;
+    private String iD;
     @SerializedName("LocalizedName")
     @Expose
     private String localizedName;
     @SerializedName("EnglishName")
     @Expose
     private String englishName;
-    private final static long serialVersionUID = -1554028427871165582L;
+    private final static long serialVersionUID = 5018028225481758160L;
 
-    public Integer getLevel() {
-        return level;
+    public String getID() {
+        return iD;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setID(String iD) {
+        this.iD = iD;
     }
 
     public String getLocalizedName() {
