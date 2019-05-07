@@ -1,4 +1,4 @@
-package com.example.rovermore.weatherapp;
+package com.example.rovermore.weatherapp.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +10,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.rovermore.weatherapp.R;
 import com.example.rovermore.weatherapp.search.SearchView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainView extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

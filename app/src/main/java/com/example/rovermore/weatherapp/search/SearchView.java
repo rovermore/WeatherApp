@@ -42,19 +42,19 @@ public class SearchView extends AppCompatActivity implements SearchViewInterface
                 searchQuery(v);
             }
         });
-
     }
 
     private void searchQuery(View v){
         String queryString = String.valueOf(editText.getText());
-        SearchPresenter searchPresenter = new SearchPresenter(this);
+        SearchPresenter searchPresenter = new SearchPresenter(getApplicationContext(),this);
         searchPresenter.fetchLocation(v,queryString);
     }
 
-    public void setListToAdapter(List<Location> locationList){
+    private void setListToAdapter(List<Location> locationList){
         locationAdapter.clearLocationListAdapter();
         locationAdapter.setLocationList(locationList);
     }
+
 
     @Override
     public void receiveResults(List<Location> locationList) {
@@ -71,4 +71,11 @@ public class SearchView extends AppCompatActivity implements SearchViewInterface
                     }
                 }).show();
     }
+
+    @Override
+    public void onReceiveOnClickViewInterface(LocationAdapter.OnViewClicked onViewClicked) {
+        locationAdapter.setOnViewClickedInterface(onViewClicked);
+    }
+
+
 }

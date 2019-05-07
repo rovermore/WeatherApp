@@ -19,10 +19,15 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyLoca
 
     private Context context;
     private List<Location> locationList;
+    private OnViewClicked onViewClicked;
 
     public LocationAdapter(Context context, List<Location> locationList){
         this.context = context;
         this.locationList = locationList;
+    }
+
+    public interface OnViewClicked {
+        void passClicked (Location location);
     }
 
     @NonNull
@@ -50,7 +55,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyLoca
         return locationList.size();
     }
 
-    public class MyLocationViewHolder extends RecyclerView.ViewHolder {
+    class MyLocationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView city;
         TextView country;
@@ -62,7 +67,15 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyLoca
             city = itemView.findViewById(R.id.tv_city_name);
             country = itemView.findViewById(R.id.tv_country_name);
             region = itemView.findViewById(R.id.tv_region_name);
+            itemView.setOnClickListener(this);
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Location location = locationList.get(position);
+            onViewClicked.passClicked(location);
         }
     }
 
@@ -83,5 +96,9 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyLoca
 
     public List<Location> getLocationList(){
         return locationList;
+    }
+
+    public void setOnViewClickedInterface(OnViewClicked onViewClicked){
+        this.onViewClicked = onViewClicked;
     }
 }

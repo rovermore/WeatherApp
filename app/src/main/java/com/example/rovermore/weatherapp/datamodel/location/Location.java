@@ -2,6 +2,7 @@
 package com.example.rovermore.weatherapp.datamodel.location;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
@@ -37,32 +38,41 @@ public class Location implements Serializable
     @SerializedName("PrimaryPostalCode")
     @Expose
     private String primaryPostalCode;
+    @Ignore
     @SerializedName("Region")
     @Expose
     private Region region;
+    @Ignore
     @SerializedName("Country")
     @Expose
     private Country country;
+    @Ignore
     @SerializedName("AdministrativeArea")
     @Expose
     private AdministrativeArea administrativeArea;
+    @Ignore
     @SerializedName("TimeZone")
     @Expose
     private TimeZone timeZone;
+    @Ignore
     @SerializedName("GeoPosition")
     @Expose
     private GeoPosition geoPosition;
+    @Ignore
     @SerializedName("IsAlias")
     @Expose
     private Boolean isAlias;
+    @Ignore
     @SerializedName("SupplementalAdminAreas")
     @Expose
     private List<SupplementalAdminArea> supplementalAdminAreas = null;
+    @Ignore
     @SerializedName("DataSets")
     @Expose
     private List<String> dataSets = null;
     private final static long serialVersionUID = -4367835460878030774L;
 
+    @Ignore
     public Location(int idDatabase, Integer version, String keyLocation, String type, Integer rank, String localizedName,
                     String englishName, String primaryPostalCode, Region region, Country country, AdministrativeArea administrativeArea,
                     TimeZone timeZone, GeoPosition geoPosition, Boolean isAlias,
@@ -83,6 +93,18 @@ public class Location implements Serializable
         this.isAlias = isAlias;
         this.supplementalAdminAreas = supplementalAdminAreas;
         this.dataSets = dataSets;
+    }
+
+    public Location(int idDatabase, Integer version, String keyLocation, String type, Integer rank, String localizedName,
+                    String englishName, String primaryPostalCode) {
+        this.idDatabase = idDatabase;
+        this.version = version;
+        this.keyLocation = keyLocation;
+        this.type = type;
+        this.rank = rank;
+        this.localizedName = localizedName;
+        this.englishName = englishName;
+        this.primaryPostalCode = primaryPostalCode;
     }
 
     public int getIdDatabase() { return idDatabase; }

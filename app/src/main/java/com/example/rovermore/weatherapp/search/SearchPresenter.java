@@ -1,11 +1,15 @@
 package com.example.rovermore.weatherapp.search;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
 import com.example.rovermore.weatherapp.AccuWeatherAPI;
 import com.example.rovermore.weatherapp.NetworkUtils;
+import com.example.rovermore.weatherapp.adapter.LocationAdapter;
+import com.example.rovermore.weatherapp.database.AppDatabase;
 import com.example.rovermore.weatherapp.datamodel.location.Location;
+import com.example.rovermore.weatherapp.threads.AppExecutors;
 
 import java.util.List;
 
@@ -15,15 +19,18 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class SearchPresenter  {
+public class SearchPresenter implements LocationAdapter.OnViewClicked {
 
     private static final String TAG = SearchPresenter.class.getSimpleName();
 
     private SearchViewInterface searchViewInterface;
+    private LocationAdapter.OnViewClicked onViewClicked;
+    private AppDatabase appDatabase;
 
-    public SearchPresenter(SearchViewInterface searchViewInterface){
+    public SearchPresenter(Context context, SearchViewInterface searchViewInterface){
        this.searchViewInterface = searchViewInterface;
-
+       this.onViewClicked = this;
+       appDatabase = AppDatabase.getInstance(context);
     }
 
     public void fetchLocation(final View view, final String location) {
@@ -44,6 +51,7 @@ public class SearchPresenter  {
                 } else {
                     List<Location> locationList = response.body();
                     searchViewInterface.receiveResults(locationList);
+                    searchViewInterface.onReceiveOnClickViewInterface(onViewClicked);
                 }
             }
 
@@ -55,4 +63,15 @@ public class SearchPresenter  {
         });
     }
 
+    @Override
+    public void passClicked(final Location location) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                appDatabase.eventDao().insertLocation(location);
+                String tagMessage = "Location saved in Database";
+                Log.d(TAG,tagMessage);
+            }
+        });
+    }
 }
