@@ -16,18 +16,22 @@ import com.example.rovermore.weatherapp.datamodel.location.Location;
 
 import java.util.List;
 
-public class SearchView extends AppCompatActivity implements SearchViewInterface {
+public class SearchView extends AppCompatActivity implements SearchViewInterface, LocationAdapter.OnViewClicked {
 
     private EditText editText;
     private Button searchButton;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private LocationAdapter locationAdapter;
+    private LocationAdapter.OnViewClicked onViewClicked;
+    private SearchPresenterInterface searchPresenterInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        searchPresenterInterface = new SearchPresenter(getApplicationContext(),this);
 
         editText = findViewById(R.id.etQuery);
         searchButton = findViewById(R.id.buttonSearch);
@@ -37,18 +41,19 @@ public class SearchView extends AppCompatActivity implements SearchViewInterface
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(locationAdapter);
+        locationAdapter.setOnViewClickedInterface(this);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchQuery(v);
+                searchQuery();
             }
         });
     }
 
-    private void searchQuery(View v){
+    private void searchQuery(){
         String queryString = String.valueOf(editText.getText());
-        SearchPresenter searchPresenter = new SearchPresenter(getApplicationContext(),this);
-        searchPresenter.fetchLocation(v,queryString);
+        searchPresenterInterface.fetchLocation(queryString);
+
     }
 
     private void setListToAdapter(List<Location> locationList){
@@ -56,30 +61,29 @@ public class SearchView extends AppCompatActivity implements SearchViewInterface
         locationAdapter.setLocationList(locationList);
     }
 
-
     @Override
     public void receiveResults(List<Location> locationList) {
         setListToAdapter(locationList);
     }
 
     @Override
-    public void receiveErrorFromSearch(final View view) {
-        Snackbar.make(view,"Error when connecting the network",Snackbar.LENGTH_SHORT)
+    public void receiveErrorFromSearch(Throwable t) {
+        Snackbar.make(searchButton,"Error when connecting the network",Snackbar.LENGTH_SHORT)
                 .setAction("Retry", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        searchQuery(view);
+                        searchQuery();
                     }
                 }).show();
     }
 
     @Override
-    public void onReceiveOnClickViewInterface(LocationAdapter.OnViewClicked onViewClicked) {
-        locationAdapter.setOnViewClickedInterface(onViewClicked);
+    public void onLocationSavedInDatabase(String string) {
+        Toast.makeText(getApplicationContext(),string, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onLocationSavedInDatabase(String string) {
-        Toast.makeText(getApplicationContext(),string, Toast.LENGTH_SHORT).show();
+    public void viewClickedFromAdapter(Location location) {
+        searchPresenterInterface.saveLocationOnDatabase(location);
     }
 }

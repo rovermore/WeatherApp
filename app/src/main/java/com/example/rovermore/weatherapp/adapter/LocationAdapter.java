@@ -27,7 +27,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyLoca
     }
 
     public interface OnViewClicked {
-        void passClicked (Location location);
+        void viewClickedFromAdapter(Location location);
     }
 
     @NonNull
@@ -75,7 +75,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyLoca
         public void onClick(View v) {
             int position = getAdapterPosition();
             Location location = locationList.get(position);
-            onViewClicked.passClicked(location);
+            onViewClicked.viewClickedFromAdapter(location);
         }
     }
 
