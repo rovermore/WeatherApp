@@ -15,4 +15,5 @@ public interface SearchViewInterface {
 
     void onReceiveOnClickViewInterface(LocationAdapter.OnViewClicked onViewClicked);
 
+    void onLocationSavedInDatabase(String string);
 }

@@ -65,13 +65,15 @@ public class SearchPresenter implements LocationAdapter.OnViewClicked {
 
     @Override
     public void passClicked(final Location location) {
+        final String tagMessage = "Location saved in Database";
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
                 appDatabase.eventDao().insertLocation(location);
-                String tagMessage = "Location saved in Database";
                 Log.d(TAG,tagMessage);
             }
         });
+
+        searchViewInterface.onLocationSavedInDatabase(tagMessage);
     }
 }

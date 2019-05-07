@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.rovermore.weatherapp.R;
 import com.example.rovermore.weatherapp.adapter.LocationAdapter;
@@ -77,5 +78,8 @@ public class SearchView extends AppCompatActivity implements SearchViewInterface
         locationAdapter.setOnViewClickedInterface(onViewClicked);
     }
 
-
+    @Override
+    public void onLocationSavedInDatabase(String string) {
+        Toast.makeText(getApplicationContext(),string, Toast.LENGTH_SHORT).show();
+    }
 }
