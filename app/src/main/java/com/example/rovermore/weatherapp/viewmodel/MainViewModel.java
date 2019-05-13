@@ -23,6 +23,6 @@ public class MainViewModel extends AndroidViewModel {
         locations = database.eventDao().loadAllLocation();
     }
 
-    public LiveData<List<Location>> getEvents(){return locations;}
+    public LiveData<List<Location>> getLocations(){return locations;}
 
 }

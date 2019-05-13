@@ -1,19 +1,34 @@
 package com.example.rovermore.weatherapp.main;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.rovermore.weatherapp.R;
+import com.example.rovermore.weatherapp.adapter.MainAdapter;
+import com.example.rovermore.weatherapp.datamodel.location.Location;
 import com.example.rovermore.weatherapp.search.SearchView;
+import com.example.rovermore.weatherapp.viewmodel.MainViewModel;
 
-public class MainView extends AppCompatActivity {
+import java.util.List;
+
+public class MainView extends AppCompatActivity implements MainAdapter.OnViewClicked {
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private MainAdapter locationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +36,13 @@ public class MainView extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        recyclerView = findViewById(R.id.mainRecyclerView);
+        layoutManager = new LinearLayoutManager(this);
+        locationAdapter = new MainAdapter(this,null, this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(locationAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -30,6 +52,25 @@ public class MainView extends AppCompatActivity {
                 startActivity(intent);
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+
+        setUpMainViewModel();
+    }
+
+    private void setUpMainViewModel(){
+        MainViewModel mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        mainViewModel.getLocations().observe(this, new Observer<List<Location>>() {
+            @Override
+            public void onChanged(@Nullable List<Location> locationList) {
+                if(locationList!=null && !locationList.isEmpty()){
+                    locationAdapter.clearLocationListAdapter();
+                    locationAdapter.setLocationList(locationList);
+                } else {
+                    //send a mesage to toast in mainview
+                    String emptyDatabaseString = "No Locations found in Favourites";
+                    Toast.makeText(getBaseContext(), emptyDatabaseString, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -54,5 +95,10 @@ public class MainView extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void viewClickedFromAdapter(Location location) {
+        //Intent to LocationDetailView (activity)
     }
 }
