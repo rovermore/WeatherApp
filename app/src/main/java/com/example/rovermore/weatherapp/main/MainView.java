@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.rovermore.weatherapp.R;
 import com.example.rovermore.weatherapp.adapter.MainAdapter;
 import com.example.rovermore.weatherapp.datamodel.location.Location;
+import com.example.rovermore.weatherapp.detail.DetailView;
 import com.example.rovermore.weatherapp.search.SearchView;
 import com.example.rovermore.weatherapp.viewmodel.MainViewModel;
 
@@ -29,6 +30,9 @@ public class MainView extends AppCompatActivity implements MainAdapter.OnViewCli
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private MainAdapter locationAdapter;
+
+    public static final String LOCATION_NAME = "location_name";
+    public static final String LOCATION_KEY= "location_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +102,10 @@ public class MainView extends AppCompatActivity implements MainAdapter.OnViewCli
     }
 
     @Override
-    public void viewClickedFromAdapter(Location location) {
-        //Intent to LocationDetailView (activity)
+    public void viewClickedFromAdapter(String locationName, String locationKey) {
+        Intent intent = new Intent(this,DetailView.class);
+        intent.putExtra(LOCATION_NAME,locationName);
+        intent.putExtra(LOCATION_KEY, locationKey);
+        startActivity(intent);
     }
 }

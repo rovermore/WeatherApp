@@ -20,7 +20,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
     private OnViewClicked onViewClicked;
 
     public interface OnViewClicked {
-        void viewClickedFromAdapter(Location location);
+        void viewClickedFromAdapter(String locationName, String locationKey);
     }
 
     public MainAdapter(Context context, List<Location> locationList, OnViewClicked onViewClicked){
@@ -69,7 +69,9 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MainViewHolder
          public void onClick(View v) {
              int position = getAdapterPosition();
              Location location = locationList.get(position);
-             onViewClicked.viewClickedFromAdapter(location);
+             String locationName = location.getLocalizedName();
+             String locationKey = location.getKeyLocation();
+             onViewClicked.viewClickedFromAdapter(locationName, locationKey);
          }
      }
 
